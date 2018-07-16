@@ -1,0 +1,18 @@
+{
+    "main_heading":     "标签化原型系统功能展示",
+
+    "cache_y_name":  "cache使用率(%)",
+
+    "mem_x_name":       "时间(s)",
+    "mem_y_name":       "内存带宽(KT/s)",
+    "mem_y_max": 5000,
+    "mem_show_num":     50,
+    "mem_interval":    1000,
+
+    "latency_title":   "99分位延迟(ms)",
+    "latency_x_name":   "时间",
+    "latency_show_num": 100,
+    "latency_y_max": 500,
+    "latency_interval": 1000,
+    "latency_x_length": 50
+}
