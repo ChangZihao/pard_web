@@ -27,10 +27,10 @@
         <input type="button" id="startButton" value="暂停" onclick="start();" style="cursor: pointer">
    </div>
 
-    <h1 style="text-align:center">标签化原型系统功能展示</h1>
-    <div id="latency_frame"  style="margin: auto; width: 1000px; height: 230px;">
+    <h1 style="text-align:center">标签化体系结构原型系统单节点功能展示</h1>
+    <div style=" text-align: center; font-size: 22; font-style: italic; text-decoration: underline;  margin-bottom: 20px"><span>目标：CPU利用率60%以上, 尾延迟降低两倍!</span></div>
+    <div id="latency_frame"  style="margin: auto; margin-bottom:20; width: 1000px; height: 230px;">
     </div>
-
     <div name="pard_demo" style="margin: auto; width: 1000px;">
 	    <div name="core">
 	    <!-- CPU Core Name -->
@@ -440,6 +440,7 @@
                         type: 'line',
                         animation: Highcharts.svg, // don't animate in old IE
                         marginRight: 10,
+			marginBottom: 40,
                     events: {
                         load: function () {
                             // set up the updating of the chart each min
@@ -472,12 +473,16 @@
                     title: {
                         text: config.latency_title,
 			style: {
-				fontSize: 17,
+				fontSize: 15,
 			},
+			y: 13,
+			x: 30,
+			verticalAlign: 'bottom',
                     },
                     xAxis: {
+		        tickLength: 3,
                         title: { 
-                            text:config.latency_x_name
+                            text:config.latency_x_name,
                         },
                         type: 'datetime',
                         tickPixelInterval: 150,
@@ -487,7 +492,8 @@
                     },
                     yAxis: {
                         title: {
-                            text: '99th百分比延迟(ms)',
+                            text: '99分位尾延迟(ms)',
+			    
 			    style: {
 			    	fontSize: 14,
 			    },
