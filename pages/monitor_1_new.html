@@ -2,6 +2,8 @@
 
 <head>
     <title>PARD UI</title>
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta HTTP-EQUIV="Expires" CONTENT="-1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../statics/css/pard.css" rel="stylesheet" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -21,43 +23,42 @@
 
 <!-- <body style="margin: auto; width: 1254px; height: 810px"> -->
 <body>
-   <!--  <br></br> --> 
-   <div id="Control" style="text-align: right">
+   <!--  <br></br> -->
+    <div id="Control" style="text-align: right">
         <span style="font-family: 微软雅黑; font-size: 14px;">线程控制:</span> 
-        <input type="button" id="startButton" value="暂停" onclick="start();" style="cursor: pointer">
-   </div>
+        <input type="button" id="startButton" value="继续" onclick="start();" style="cursor: pointer">
+    </div>
 
     <h1 style="text-align:center">标签化原型系统功能展示</h1>
     <div id="latency_frame"  style="margin: auto; width: 1000px; height: 230px;">
     </div>
 
     <div name="pard_demo" style="margin: auto; width: 1000px;">
-	    <div name="core">
-	    <!-- CPU Core Name -->
+        <!-- CPU Core Name -->
         <div name="div_cpu_core_title" class="box_core_title_group" style="margin: auto;">
             <div class="box_core_text box_core_text_size">
-                <b>redis</b>
+                <b>Core 0</b>
             </div>
             <div class="box_core_text box_core_text_size">
-                <b>md5</b>
+                <b>Core 1</b>
             </div>
             <div class="box_core_text box_core_text_size">
-                <b>sort</b>
+                <b>Core 2</b>
             </div>
             <div class="box_core_text box_core_text_size">
-                <b>wordcount</b>
+                <b>Core 3</b>
             </div>
         </div>
 
         <!-- CPU Core Image -->
-	<div name="div_cpu_core" class="box_core_group" style="margin: auto;">
+        <div name="div_cpu_core" class="box_core_group" style="margin: auto;">
             <div id="core_0" class="box_core_off box_norm_size"></div>
             <div id="core_0" class="box_core_off box_norm_size"></div>
             <div id="core_0" class="box_core_off box_norm_size"></div>
             <div id="core_0" class="box_core_off box_norm_size"></div>
         </div>
 
-        <div name="div_cpu_bus" class="box_core_bus_group" style="margin: auto; height: 40px">
+        <div name="div_cpu_bus" class="box_core_bus_group" style="margin: auto;">
             <div class="box_core_bus box_core_buse_size"></div>
             <div class="box_core_bus box_core_buse_size"></div>
             <div class="box_core_bus box_core_buse_size"></div>
@@ -65,32 +66,31 @@
         </div>
 
         <!-- CPU Core NoC -->
-        <div class="box_hbus" style="margin: auto; height:35px">
+        <div class="box_hbus" style="margin: auto;">
             <hr width=600 size=5 color=#000000>
         </div>
-	</div>
         <div class="box_vbus" style="margin: auto; width: 1000px;"></div>
 
         <!-- CPU Cache Usage -->
-        <div id="figure_cache_usage" class="box_cache" style="margin: auto; width: 1000px; height: 140px"></div>
+        <div id="figure_cache_usage" class="box_cache" style="margin: auto; width: 1000px; height: 120px"></div>
         <div class="box_vbus" style="margin: auto; width: 1000px;"></div>
 
         <!-- CPU memor Bandwidth Usage -->
-        <div id="figure_mem_usage" class="box_mem" style="margin: auto; width: 1000px; height: 180px"></div>
+        <div id="figure_mem_usage" class="box_mem" style="margin: auto; width: 1000px; height: 170px"></div>
         <div style="height:100px;"></div>
 
         <!--  <script src="echarts-all.js"></script> -->    
         <script type="text/javascript">
-            var flag = true;
+            var flag = false;
             var init = false;
             var latency_x_num = 0;
-	    var latency_interval = 3000;
-            
+            var latency_interval = 1000;	 
+
             $.getJSON('monitor_1_config.json?random='+Math.random(),function (config) {
 
             $('h1').text(config.main_heading);
-            latency_interval = config.latency_interval;
-	    var myChart = echarts.init(document.getElementById('figure_cache_usage'));
+	    latency_interval = config.latency_interval;
+            var myChart = echarts.init(document.getElementById('figure_cache_usage'));
             option = {
                 tooltip: {
                     trigger: 'axis',
@@ -103,6 +103,7 @@
                     bottom: '15%',
                     left: '5%',
                     right: '2%',
+		    containLable: true,
                 },
                 toolbox: {
                     show: true,
@@ -118,23 +119,24 @@
                 xAxis: [
                     {
                         type: 'value',
-                        boundaryGap: [0, 0],
+                        boundaryGap: false,
                         splitNumber: 10
                     }
                 ],
                 yAxis: [
                     {
                         type: 'category',
-                        data: [" "],
+                        data: [' '],
                         splitNumber: 4,
+                        boundaryGap: false,
                         name: config.cache_y_name,
                         nameLocation: 'middle',
                         nameTextStyle: {
                             color: "#666666",
-                            fontSize: 17, 
+                            fontSize: 16, 
                             // fontWeight: 'bold',
                             // fontFamily: "Arial",
-                             padding: [3, 3, 3, 3],
+                           //  padding: [50, 50, 30, 50],
                         },
                     }
                 ],
@@ -143,15 +145,20 @@
                         name: 'core0',
                         type: 'bar',
                         stack: '总量',
-			barWidth: '100%',
+			barCategoryGap: '0%',
+			barGap: '0%',
+			barWidth: "100%",
+			//areaStyle: {
+			//	normal:{};
+		//	},
                         itemStyle: {
+			    borderWidth: 1,
                             normal: {
                                 label: {
                                     show: true,
                                     position: 'inside',
                                     fontSize: 24
-                                },
-				    color: 'rgb(169, 66, 58)',
+                                }
                             }
                         },
                         data: [1]
@@ -160,14 +167,16 @@
                         name: 'core1',
                         type: 'bar',
                         stack: '总量',
+			barCategoryGap: '0%',
+			barGap: '0%',
+			barWidth: 100,
                         itemStyle: {
                             normal: {
                                 label: {
                                     show: true,
                                     position: 'inside',
                                     fontSize: 24
-                                },
-			    color: 'rgb(74,134,232)',	    
+                                }
                             }
                         },
                         data: [2]
@@ -176,14 +185,16 @@
                         name: 'core2',
                         type: 'bar',
                         stack: '总量',
+			barCategoryGap: '0%',
+			barGap: '0%',
+			barWidth: 1,
                         itemStyle: {
                             normal: {
                                 label: {
                                     show: true,
                                     position: 'inside',
                                     fontSize: 24
-                                },
-			    color: 'rgb(95,162,169)',	    
+                                }
                             }
                         },
                         data: [3]
@@ -192,14 +203,16 @@
                         name: 'core3',
                         type: 'bar',
                         stack: '总量',
+			barCategoryGap: '0%',
+			barWidth: 100,
+			barGap: '0%',
                         itemStyle: {
                             normal: {
                                 label: {
                                     show: true,
                                     position: 'inside',
                                     fontSize: 24
-                                },
-			    color: 'rgb(204,153,51)',	    
+                                }
                             }
                         },
                         data: [4],
@@ -209,6 +222,9 @@
                         name: 'idle',
                         type: 'bar',
                         stack: '总量',
+			barCategoryGap: '0%',
+			barGap: '0%',
+			barWidth: 100,
                         itemStyle: {
                             normal: {
                                 label: {
@@ -234,7 +250,6 @@
             var data_core2 = [];
             var data_core3 = [];
 
-
             var option1 = {
                 /*
                 title: {
@@ -257,7 +272,7 @@
                 */
 
                 grid: {
-		top: '8%',
+		top: '7%',
                     left: '5%',
                     right: '4%',
                     bottom: '12%',
@@ -268,10 +283,10 @@
                     nameLocation: 'middle',
                     nameTextStyle: {
                         color: "#999999",
-                        fontSize: 15, // 这个会影响坐标轴的字体大小，不懂为什么
+                        fontSize: 12, // 这个会影响坐标轴的字体大小，不懂为什么
                         fontWeight: 'normal',
                         fontFamily: "Arial",
-                        //padding: [50, 50, 30, 50],
+                        padding: 0,
                     },
                     type: 'category',
                     boundaryGap: false,
@@ -285,10 +300,10 @@
                     nameLocation: 'middle',
                     nameTextStyle: {
                         color: "#666666",
-                        fontSize: 17, 
+                        fontSize: 16, 
                         // fontWeight: 'bold',
                         // fontFamily: "Arial",
-                        padding: [70, 20, 22, 40],
+                        padding:40,
                     },
                     type: 'value',
                     max: config.mem_y_max,
@@ -298,15 +313,8 @@
                         name: 'core0',
                         type: 'line',
                         stack: '总量',
-                        lineStyle: {
-                            normal: {
-                            	color: 'rgb(169, 66, 58)',
-			    },
-                        },
                         areaStyle: {
-                            normal: {
-                            	color: 'rgba(169, 66, 58, 0.8)',
-			    },
+                            normal: {}
                         },
                         //data: [220, 182, 191, 234, 290, 330, 310]
                     },
@@ -314,15 +322,8 @@
                         name: 'core1',
                         type: 'line',
                         stack: '总量',
-                        lineStyle: {
-                            normal: {
-                            	color: 'rgb(74, 134, 232)',
-			    },
-                        },
                         areaStyle: {
-                            normal: {
-                            	color: 'rgb(74, 134, 232, 0.8)',
-			    },
+                            normal: {}
                         },
                         //data: [150, 232, 201, 154, 190, 330, 410]
                     },
@@ -330,15 +331,8 @@
                         name: 'core2',
                         type: 'line',
                         stack: '总量',
-                        lineStyle: {
-                            normal: {
-                            	color: 'rgb(95, 162, 169)'
-			    },
-                        },
                         areaStyle: {
-                            normal: {
-                            	color: 'rgba(95, 162, 169, 0.8)'
-			    },
+                            normal: {}
                         },
                         //data: [320, 332, 301, 334, 390, 330, 320]
                     },
@@ -352,15 +346,8 @@
                                 position: 'top'
                             }
                         },
-                        lineStyle: {
-                            normal: {
-                            	color: 'rgb(204, 150, 51)'
-			    },
-                        },
                         areaStyle: {
-                            normal: {
-                            	color: 'rgba(204, 153, 51, 0.8)'
-			    },
+                            normal: {}
                         },
                         //data: [820, 932, 901, 934, 1290, 1330, 1320]
                     }
@@ -373,9 +360,11 @@
             var fresh_interval = 1000;
             setInterval(function () {
                 $.getJSON('monitor_1_data.json?random=' + Math.random(), function (json) {
-                  if (flag == true){
                     var myDate = new Date();
-                    //更新cpu
+                    var t = new Date().getTime();
+                    console.log(json);
+		    console.log(t);
+		    //更新cpu
                     for (var i = 0; i < json.cpu_switch.length; i++) {
                         if (json.cpu_switch[i] == 0) {
                             $(".box_core_group div").eq(i).removeClass("box_core_on_" + i);
@@ -428,7 +417,6 @@
                     option1.yAxis[0].max = config.mem_y_max;
                     myChart1.setOption(option1);
                     fresh_interval = json.refresh_interval;
-		}
                 });
             }, config.mem_interval);
 
@@ -470,10 +458,7 @@
                     }
                     },
                     title: {
-                        text: config.latency_title,
-			style: {
-				fontSize: 17,
-			},
+                        text: config.latency_title
                     },
                     xAxis: {
                         title: { 
@@ -481,16 +466,10 @@
                         },
                         type: 'datetime',
                         tickPixelInterval: 150,
-			labels: {
-				enabled: false,
-			}
                     },
                     yAxis: {
                         title: {
-                            text: '99th百分比延迟(ms)',
-			    style: {
-			    	fontSize: 14,
-			    },
+                            text: '99th百分比延迟(ms)'
                         },
                         max: config.latency_y_max,
                         min: 0
@@ -519,7 +498,7 @@
                     exporting: {
                         enabled: false
                     },
-			    series:[{color: '#c22d26',name:'Latency',data:[],marker: {enabled: false}}]
+                    series:[{name:'Latency',data:[],marker: {enabled: false}}]
                 };
 
                 var chart = Highcharts.chart('latency_frame', latency_option);

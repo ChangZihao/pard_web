@@ -21,8 +21,8 @@
     background:url(../images/v_line.png) no-repeat center;
 }
 
-.box_core_buse_size{width:25%;height:100%}
-.box_core_text_size{width:25%}
+.box_core_buse_size{width:25%;height:40px}
+.box_core_text_size{font-size:22; width:25%}
 .box_core_title_group{border:0px solid #F00;width:80%;}
 
 /* DIVCSS5-CSS PARD Core Image */
@@ -64,8 +64,8 @@
 }
 
 .box_norm_size{border:0px solid #F00; width:25%; height:105%}
-.box_core_group{border:0px solid #F00;width:80%; height:10%}
-.box_core_bus_group{border:0px solid #F00;width:80%; height:10%}
+.box_core_group{border:0px solid #F00;width:80%; height:78px}
+.box_core_bus_group{border:0px solid #F00;width:80%; height:10%; padding: 0 0 0 0}
 
 .box_hbus{
    border:0px solid #F00; width:80%; height:20pt;
@@ -73,7 +73,7 @@
 
 .box_vbus{
    background:url(../images/v_line.png) no-repeat center;
-   border:0px solid #F00;width:80%; height:10%;
+   border:0px solid #F00;width:80%; height:30px;
 }
 
 /* DIVCSS5-CSS PARD NoC */
